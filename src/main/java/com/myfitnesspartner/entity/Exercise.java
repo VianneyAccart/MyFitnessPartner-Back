@@ -22,7 +22,6 @@ public class Exercise {
     @Size(min = 1, max = 150)
     private String name;
 
-    @JsonIgnore
     @NotBlank
     @Size(min = 1, max = 1500)
     private String description;

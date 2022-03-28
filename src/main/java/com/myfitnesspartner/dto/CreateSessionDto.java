@@ -1,19 +1,16 @@
-package com.myfitnesspartner.entity;
+package com.myfitnesspartner.dto;
 
+import com.myfitnesspartner.entity.Exercise;
+import com.myfitnesspartner.entity.Feeling;
+import com.myfitnesspartner.entity.User;
 import org.springframework.data.annotation.CreatedDate;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
 
-@Entity
-public class Session {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class CreateSessionDto {
 
     @CreatedDate
     @NotNull
@@ -26,29 +23,13 @@ public class Session {
     private String note;
 
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "feeling_id")
     private Feeling feeling;
 
     @NotNull
-    @ManyToOne
-    @JoinColumn(name = "user_id")
     private User user;
 
     @NotNull
-    @ManyToMany
-    @JoinTable(name = "session_exercise",
-            joinColumns = @JoinColumn(name = "session_id"),
-            inverseJoinColumns = @JoinColumn(name = "exercise_id"))
     private List<Exercise> exercises;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public LocalDate getDate() {
         return date;
@@ -64,6 +45,14 @@ public class Session {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public Feeling getFeeling() {
@@ -88,13 +77,5 @@ public class Session {
 
     public void setExercises(List<Exercise> exercises) {
         this.exercises = exercises;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
     }
 }

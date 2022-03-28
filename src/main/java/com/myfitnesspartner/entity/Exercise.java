@@ -1,10 +1,13 @@
 package com.myfitnesspartner.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -19,16 +22,19 @@ public class Exercise {
     @Size(min = 1, max = 150)
     private String name;
 
+    @JsonIgnore
     @NotBlank
     @Size(min = 1, max = 1500)
     private String description;
 
     @NotNull
-    private LocalDate lastUpdate;
+    private LocalDateTime lastUpdate;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "exercise")
     private List<Serie> series;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "exercises")
     private List<Session> sessions;
 
@@ -37,13 +43,16 @@ public class Exercise {
     @JoinColumn(name = "muscular_group_id")
     private MuscularGroup muscularGroup;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "exercise")
     private List<Record> records;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "picture_id")
     private Picture picture;
 
+    @JsonIgnore
     @OneToOne
     @JoinColumn(name = "video_id")
     private Video video;
@@ -114,11 +123,11 @@ public class Exercise {
         this.description = description;
     }
 
-    public LocalDate getLastUpdate() {
+    public LocalDateTime getLastUpdate() {
         return lastUpdate;
     }
 
-    public void setLastUpdate(LocalDate lastUpdate) {
+    public void setLastUpdate(LocalDateTime lastUpdate) {
         this.lastUpdate = lastUpdate;
     }
 

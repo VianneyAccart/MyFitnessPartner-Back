@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -32,6 +34,7 @@ public class MuscularGroupService {
     public ResponseEntity<String> createMuscularGroup(CreateMuscularGroupDto createMuscularGroupDto) {
         MuscularGroup muscularGroup = new MuscularGroup();
         muscularGroup.setName(createMuscularGroupDto.getName());
+        muscularGroup.setLastUpdate(LocalDateTime.now());
         muscularGroupRepository.save(muscularGroup);
         return new ResponseEntity<>("Muscular group " + muscularGroup.getName() + " well created", HttpStatus.OK);
     }
@@ -39,6 +42,7 @@ public class MuscularGroupService {
     public ResponseEntity<String> modifyMuscularGroupById(@PathVariable() Long id, @Valid CreateMuscularGroupDto createMuscularGroupDto) {
         MuscularGroup muscularGroup = getMuscularGroupById(id);
         muscularGroup.setName(createMuscularGroupDto.getName());
+        muscularGroup.setLastUpdate(LocalDateTime.now());
         muscularGroupRepository.save(muscularGroup);
         return new ResponseEntity<>("Muscular group well modified", HttpStatus.OK);
     }

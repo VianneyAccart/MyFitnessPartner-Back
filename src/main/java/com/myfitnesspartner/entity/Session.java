@@ -22,6 +22,9 @@ public class Session {
     @Size(min = 1, max = 100)
     private String name;
 
+    @Size(min = 1, max = 250)
+    private String note;
+
     @ManyToOne
     @JoinColumn(name = "feeling_id")
     private Feeling feeling;
@@ -84,5 +87,13 @@ public class Session {
 
     public void setExercises(List<Exercise> exercises) {
         this.exercises = exercises;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 }

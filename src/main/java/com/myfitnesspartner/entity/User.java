@@ -55,6 +55,10 @@ public class User {
     @JoinColumn(name = "gender_id")
     private Gender gender;
 
+    @OneToOne
+    @JoinColumn(name = "picture_id")
+    private Picture profilePicture;
+
     @OneToMany(mappedBy = "user")
     private List<Weighing> weighings;
 
@@ -185,5 +189,13 @@ public class User {
 
     public void setMeasurements(List<Measurement> measurements) {
         this.measurements = measurements;
+    }
+
+    public Picture getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(Picture profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }

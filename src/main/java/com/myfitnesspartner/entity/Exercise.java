@@ -4,6 +4,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDate;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,13 @@ public class Exercise {
     @NotBlank
     @Size(min = 1, max = 150)
     private String name;
+
+    @NotBlank
+    @Size(min = 1, max = 1500)
+    private String description;
+
+    @NotNull
+    private LocalDate lastUpdate;
 
     @OneToMany(mappedBy = "exercise")
     private List<Serie> series;
@@ -30,6 +38,14 @@ public class Exercise {
 
     @OneToMany(mappedBy = "exercise")
     private List<Record> records;
+
+    @OneToOne
+    @JoinColumn(name = "picture_id")
+    private Picture picture;
+
+    @OneToOne
+    @JoinColumn(name = "video_id")
+    private Video video;
 
     public Long getId() {
         return id;
@@ -77,5 +93,37 @@ public class Exercise {
 
     public void setRecords(List<Record> records) {
         this.records = records;
+    }
+
+    public Picture getPicture() {
+        return picture;
+    }
+
+    public void setPicture(Picture picture) {
+        this.picture = picture;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDate getLastUpdate() {
+        return lastUpdate;
+    }
+
+    public void setLastUpdate(LocalDate lastUpdate) {
+        this.lastUpdate = lastUpdate;
+    }
+
+    public Video getVideo() {
+        return video;
+    }
+
+    public void setVideo(Video video) {
+        this.video = video;
     }
 }

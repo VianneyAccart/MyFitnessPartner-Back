@@ -15,7 +15,7 @@ public class MuscularGroup {
     private Long id;
 
     @NotBlank
-    @Size(min = 1, max = 100)
+    @Size(min = 1, max = 150)
     private String name;
 
     @NotNull

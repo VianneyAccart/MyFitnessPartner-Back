@@ -5,6 +5,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -46,6 +47,8 @@ public class Exercise {
     @OneToOne
     @JoinColumn(name = "video_id")
     private Video video;
+
+    public static Comparator<Exercise> sortByAscendingName = Comparator.comparing(s -> s.name);
 
     public Long getId() {
         return id;

@@ -1,14 +1,17 @@
 package com.myfitnesspartner.service;
 
 import com.myfitnesspartner.dto.CreateSessionDto;
-import com.myfitnesspartner.entity.Exercise;
-import com.myfitnesspartner.entity.Serie;
-import com.myfitnesspartner.repository.SerieRepository;
-import com.myfitnesspartner.repository.UserRepository;
+import com.myfitnesspartner.dto.ExerciseDto;
+import com.myfitnesspartner.dto.SerieDto;
+import com.myfitnesspartner.entity.*;
+import com.myfitnesspartner.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,32 +24,80 @@ public class SessionService {
     @Autowired
     SerieRepository serieRepository;
 
-    public void createSession(@Valid CreateSessionDto createSessionDto) {
-        CreateSessionDto session = new CreateSessionDto();
-        session.setDate(createSessionDto.getDate());
-        session.setFeeling(createSessionDto.getFeeling());
+    @Autowired
+    SessionRepository sessionRepository;
+
+    @Autowired
+    SessionExerciseRepository sessionExerciseRepository;
+
+    @Autowired
+    FeelingRepository feelingRepository;
+
+    @Autowired
+    ExerciseRepository exerciseRepository;
+
+    public void createSession(CreateSessionDto createSessionDto) {
+        // CREATE SESSION
+        Session session = new Session();
+        // TODO : rendre dynamique la date
+        session.setDate(LocalDate.of(2022, 3, 29));
+        System.err.println("Avant feeling");
+        Feeling feeling = feelingRepository.findById(5L)
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        System.err.println("Feeling trouvé");
+        session.setFeeling(feeling);
+        System.err.println("Après feeling");
         if (createSessionDto.getName() != null) {
             session.setName(createSessionDto.getName());
         }
         if (createSessionDto.getNote() != null) {
             session.setNote(createSessionDto.getNote());
         }
+        System.err.println("Session sans l'user");
         // TODO : change this method to get logged user
-        session.setUser(userRepository.getById(1L));
+        User user = userRepository.findById(1L)
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+        session.setUser(user);
+        System.err.println("Session User ID OK");
+        sessionRepository.save(session);
+        System.err.println("Session enregistrée");
 
-        List<Exercise> exercises = new ArrayList<>();
-        for (Exercise exercise : exercises) {
-            Exercise currentExercise = new Exercise();
-            currentExercise.setId(exercise.getId());
+        // GET EXISTING SESSION
+        Session existingSession = sessionRepository.findById(session.getId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+        List<SessionExercise> sessionExercises = new ArrayList<>();
+        System.err.println("Liste de sessionExercises initialisée");
+
+        // CREATE SESSION_EXERCISES
+        for (ExerciseDto exerciseDto : createSessionDto.getExercises()) {
+            SessionExercise sessionExercise = new SessionExercise();
+            System.err.println("Nouvelle session créée");
+            Exercise exercise = exerciseRepository.findById(exerciseDto.getExerciseId())
+                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+            sessionExercise.setExercise(exercise);
+            sessionExercise.setSession(existingSession);
+            sessionExerciseRepository.save(sessionExercise);
+            System.err.println("Nouvelle session sauvegardée dans la DB");
+            sessionExercises.add(sessionExercise);
+            System.err.println("Nouvelle session ajoutée à la liste de sessionExercise");
+
+            SessionExercise existingSessionExercise = sessionExerciseRepository.findById(sessionExercise.getId())
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
 
             List<Serie> series = new ArrayList<>();
-            for (Serie serie : series) {
+            for (SerieDto serie : exerciseDto.getSeries()) {
                 Serie currentSerie = new Serie();
-                currentSerie.setExercise(exercise); // Not sure
                 currentSerie.setWeight(serie.getWeight());
                 currentSerie.setRepetitions((serie.getRepetitions()));
+                currentSerie.setSessionExercise(existingSessionExercise);
+                series.add(currentSerie);
                 serieRepository.save(currentSerie);
             }
+            existingSessionExercise.setSeries(series);
+            sessionExerciseRepository.save(existingSessionExercise);
         }
+        session.setSessionExercises(sessionExercises);
+        sessionRepository.save(session);
     }
 }

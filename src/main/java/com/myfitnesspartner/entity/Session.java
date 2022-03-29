@@ -35,12 +35,8 @@ public class Session {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @NotNull
-    @ManyToMany
-    @JoinTable(name = "session_exercise",
-            joinColumns = @JoinColumn(name = "session_id"),
-            inverseJoinColumns = @JoinColumn(name = "exercise_id"))
-    private List<Exercise> exercises;
+    @OneToMany(mappedBy = "session")
+    private List<SessionExercise> sessionExercises;
 
     public Long getId() {
         return id;
@@ -82,19 +78,19 @@ public class Session {
         this.user = user;
     }
 
-    public List<Exercise> getExercises() {
-        return exercises;
-    }
-
-    public void setExercises(List<Exercise> exercises) {
-        this.exercises = exercises;
-    }
-
     public String getNote() {
         return note;
     }
 
     public void setNote(String note) {
         this.note = note;
+    }
+
+    public List<SessionExercise> getSessionExercises() {
+        return sessionExercises;
+    }
+
+    public void setSessionExercises(List<SessionExercise> sessionExercises) {
+        this.sessionExercises = sessionExercises;
     }
 }

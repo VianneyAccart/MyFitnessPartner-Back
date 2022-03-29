@@ -1,10 +1,9 @@
 package com.myfitnesspartner.dto;
 
-import com.myfitnesspartner.entity.Exercise;
-import com.myfitnesspartner.entity.Feeling;
-import com.myfitnesspartner.entity.User;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -12,8 +11,8 @@ import java.util.List;
 
 public class CreateSessionDto {
 
-    @CreatedDate
     @NotNull
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
     @Size(min = 1, max = 100)
@@ -23,13 +22,13 @@ public class CreateSessionDto {
     private String note;
 
     @NotNull
-    private Feeling feeling;
+    private Long feelingId;
 
     @NotNull
-    private User user;
+    private Long userId;
 
     @NotNull
-    private List<Exercise> exercises;
+    private List<ExerciseDto> exercises;
 
     public LocalDate getDate() {
         return date;
@@ -55,27 +54,27 @@ public class CreateSessionDto {
         this.note = note;
     }
 
-    public Feeling getFeeling() {
-        return feeling;
+    public Long getFeelingId() {
+        return feelingId;
     }
 
-    public void setFeeling(Feeling feeling) {
-        this.feeling = feeling;
+    public void setFeelingId(Long feelingId) {
+        this.feelingId = feelingId;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public List<Exercise> getExercises() {
+    public List<ExerciseDto> getExercises() {
         return exercises;
     }
 
-    public void setExercises(List<Exercise> exercises) {
+    public void setExercises(List<ExerciseDto> exercises) {
         this.exercises = exercises;
     }
 }

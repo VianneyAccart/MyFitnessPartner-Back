@@ -21,8 +21,8 @@ public class Serie {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "exercise_id")
-    private Exercise exercise;
+    @JoinColumn(name = "session_exercise_id")
+    private SessionExercise sessionExercise;
 
     public Long getId() {
         return id;
@@ -48,11 +48,11 @@ public class Serie {
         this.weight = weight;
     }
 
-    public Exercise getExercise() {
-        return exercise;
+    public SessionExercise getSessionExercise() {
+        return sessionExercise;
     }
 
-    public void setExercise(Exercise exercise) {
-        this.exercise = exercise;
+    public void setSessionExercise(SessionExercise sessionExercise) {
+        this.sessionExercise = sessionExercise;
     }
 }

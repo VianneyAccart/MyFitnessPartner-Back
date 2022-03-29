@@ -1,5 +1,8 @@
 package com.myfitnesspartner.service;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myfitnesspartner.dto.CreateSessionDto;
 import com.myfitnesspartner.dto.ExerciseDto;
 import com.myfitnesspartner.dto.SerieDto;
@@ -11,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
+import java.io.DataInput;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +41,7 @@ public class SessionService {
     @Autowired
     ExerciseRepository exerciseRepository;
 
-    public void createSession(CreateSessionDto createSessionDto) {
+    public void createSession(CreateSessionDto createSessionDto) throws IOException {
         // CREATE SESSION
         Session session = new Session();
         // TODO : rendre dynamique la date
@@ -70,7 +75,19 @@ public class SessionService {
         System.err.println("Liste de sessionExercises initialisée");
 
         // CREATE SESSION_EXERCISES
-        for (ExerciseDto exerciseDto : createSessionDto.getExercises()) {
+        // TODO : createSessionDto.getExercises() is a String[] and not List<ExerciseDto>
+
+        System.err.println("Avant mapper" + createSessionDto.getExercises());
+
+        ObjectMapper mapper = new ObjectMapper();
+        List<ExerciseDto> list = mapper.readValue((JsonParser) createSessionDto.getExercises(), new TypeReference<>() {
+        });
+
+        System.err.println("Après mapper" + list);
+
+
+
+        for (ExerciseDto exerciseDto : list) {
             SessionExercise sessionExercise = new SessionExercise();
             System.err.println("Nouvelle session créée");
             Exercise exercise = exerciseRepository.findById(exerciseDto.getExerciseId())

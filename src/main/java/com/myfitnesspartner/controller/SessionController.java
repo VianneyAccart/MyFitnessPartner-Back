@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.io.IOException;
 
 @RestController
 @CrossOrigin
@@ -19,7 +20,7 @@ public class SessionController {
     SessionService sessionService;
 
     @PostMapping("/session/create")
-    public void createSession(CreateSessionDto createSessionDto) {
+    public void createSession(CreateSessionDto createSessionDto) throws IOException {
         sessionService.createSession(createSessionDto);
     }
 }

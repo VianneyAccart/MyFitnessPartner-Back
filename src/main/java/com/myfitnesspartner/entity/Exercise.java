@@ -6,13 +6,14 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
 @Entity
 public class Exercise {
+
+    public static Comparator<Exercise> sortByAscendingName = Comparator.comparing(s -> s.name);
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +23,6 @@ public class Exercise {
     @Size(min = 1, max = 150)
     private String name;
 
-    @JsonIgnore
     @NotBlank
     @Size(min = 1, max = 1500)
     private String description;
@@ -32,11 +32,7 @@ public class Exercise {
 
     @JsonIgnore
     @OneToMany(mappedBy = "exercise")
-    private List<Serie> series;
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "exercises")
-    private List<Session> sessions;
+    private List<SessionExercise> sessionExercises;
 
     @NotNull
     @ManyToOne
@@ -57,8 +53,6 @@ public class Exercise {
     @JoinColumn(name = "video_id")
     private Video video;
 
-    public static Comparator<Exercise> sortByAscendingName = Comparator.comparing(s -> s.name);
-
     public Long getId() {
         return id;
     }
@@ -73,22 +67,6 @@ public class Exercise {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public List<Serie> getSeries() {
-        return series;
-    }
-
-    public void setSeries(List<Serie> series) {
-        this.series = series;
-    }
-
-    public List<Session> getSessions() {
-        return sessions;
-    }
-
-    public void setSessions(List<Session> sessions) {
-        this.sessions = sessions;
     }
 
     public MuscularGroup getMuscularGroup() {
@@ -137,5 +115,13 @@ public class Exercise {
 
     public void setVideo(Video video) {
         this.video = video;
+    }
+
+    public List<SessionExercise> getSessionExercises() {
+        return sessionExercises;
+    }
+
+    public void setSessionExercises(List<SessionExercise> sessionExercises) {
+        this.sessionExercises = sessionExercises;
     }
 }

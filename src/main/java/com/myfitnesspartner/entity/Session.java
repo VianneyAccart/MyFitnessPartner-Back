@@ -19,10 +19,10 @@ public class Session {
     @NotNull
     private LocalDate date;
 
-    @Size(min = 1, max = 100)
+    @Size(max = 100)
     private String name;
 
-    @Size(min = 1, max = 250)
+    @Size(max = 250)
     private String note;
 
     @NotNull

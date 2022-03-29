@@ -1,9 +1,7 @@
 package com.myfitnesspartner.dto;
 
-import org.springframework.data.annotation.CreatedDate;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.persistence.Temporal;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -15,17 +13,14 @@ public class CreateSessionDto {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate date;
 
-    @Size(min = 1, max = 100)
+    @Size(max = 100)
     private String name;
 
-    @Size(min = 1, max = 250)
+    @Size(max = 250)
     private String note;
 
     @NotNull
     private Long feelingId;
-
-    @NotNull
-    private Long userId;
 
     @NotNull
     private List<ExerciseDto> exercises;
@@ -60,14 +55,6 @@ public class CreateSessionDto {
 
     public void setFeelingId(Long feelingId) {
         this.feelingId = feelingId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public List<ExerciseDto> getExercises() {

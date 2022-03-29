@@ -3,13 +3,10 @@ package com.myfitnesspartner.controller;
 import com.myfitnesspartner.dto.CreateSessionDto;
 import com.myfitnesspartner.service.SessionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.io.IOException;
 
 @RestController
 @CrossOrigin
@@ -20,7 +17,7 @@ public class SessionController {
     SessionService sessionService;
 
     @PostMapping("/session/create")
-    public void createSession(CreateSessionDto createSessionDto) throws IOException {
-        sessionService.createSession(createSessionDto);
+    public ResponseEntity<String> createSession(@Valid @RequestBody CreateSessionDto createSessionDto) {
+        return sessionService.createSession(createSessionDto);
     }
 }

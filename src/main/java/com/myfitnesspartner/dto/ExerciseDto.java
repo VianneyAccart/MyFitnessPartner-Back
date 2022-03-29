@@ -11,7 +11,6 @@ public class ExerciseDto {
     @NotNull
     private Long exerciseId;
 
-    @NotNull
     private List<SerieDto> series;
 
     public Long getMuscularGroupId() {
